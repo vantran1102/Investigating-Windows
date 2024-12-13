@@ -80,6 +80,82 @@
         <img width="1828" alt="Screenshot 2024-11-22 at 5 12 50 PM" src="https://github.com/user-attachments/assets/43f4ff1b-e22e-4919-a7d7-ba7061a81c42">
     </ol>
     <p><strong>Answer:</strong> Clean file system</p>
+    <h2>8. What file was the task trying to run daily?</h2>
+    <p>To retrieve a specific scheduled task from the Task Scheduler Library and identify the program it is running, use the following PowerShell commands:</p>
+    <ol>
+        <li>Assign the task to a variable:</li>
+        <pre><code>$task = Get-ScheduledTask | Where-Object TaskName -EQ "Clean file system"</code></pre>
+        <li>View the action associated with the task:</li>
+        <pre><code>$task.Actions</code></pre>
+    </ol>
+    <p><strong>Result:</strong></p>
+    <img width="841" alt="Screenshot 2024-12-01 at 10 20 26 PM" src="https://github.com/user-attachments/assets/dd4a824c-96c9-421f-bc50-f4ceb5a7e71f">
+    <p><strong>Answer:</strong> nc.ps1</p>
+    <h2>9. What port did this file listen locally for?</h2>
+    <p>The port number is found in the <strong>Arguments</strong> column from the previous command output:</p>
+    <img width="763" alt="Screenshot 2024-12-01 at 10 27 53 PM" src="https://github.com/user-attachments/assets/581e8e77-a796-41a9-ae69-ac950d5a3235">
+    <p><strong>Answer:</strong> 1348</p>
+    <h2>10. When did Jenny last logon?</h2>
+    <p>To find Jenny's last logon time, use the following command:</p>
+    <pre><code>net user Jenny | findstr "Last"</code></pre>
+    <p><strong>Result:</strong></p>
+    <img width="603" alt="Screenshot 2024-12-01 at 10 57 38 PM" src="https://github.com/user-attachments/assets/c6fdb7a5-c1ec-4ac7-be2e-486d9f058dea">
+    <p><strong>Answer:</strong> Never</p>
+    <h2>11. At what date did the compromise take place?</h2>
+    <h3>Method 1: Using `net user` command</h3>
+    <p>To find details about the `Last Set` field or other time-related entries for Jenny, use:</p>
+    <pre><code>net user jenny</code></pre>
+    <p><strong>Result:</strong></p>
+    <img width="619" alt="Screenshot 2024-12-01 at 11 04 44 PM" src="https://github.com/user-attachments/assets/a1ddfe79-25a2-4512-944a-a519b33d1d5f">
+    <h3>Method 2: Analyzing File Explorer Metadata</h3>
+    <p>Open File Explorer and navigate to <code>Local Disk (C:)</code>. Look for the recurring date in the folder properties.</p>
+    <p><strong>Result:</strong></p>
+    <img width="1090" alt="Screenshot 2024-12-01 at 11 17 20 PM" src="https://github.com/user-attachments/assets/34bc8e43-0ee5-41c7-afce-0c0eb274e900">
+    <p><strong>Answer:</strong> 03/02/2019</p>
+    <h2>12. During the compromise, at what time did Windows first assign special privileges to a new logon?</h2>
+    <p>To determine the time when special privileges were assigned to a new logon, follow these steps:</p>
+    <ol>
+        <li>Open Event Viewer by typing the command:</li>
+        <pre><code>eventvwr</code></pre>
+        <li>Click <strong>Create Custom View</strong> on the right side of the Event Viewer window.</li>
+        <li>Set the <strong>Custom Range</strong> to:
+            <ul>
+                <li>Date: 03/02/2019</li>
+                <li>Time: 4:00:00 PM – 5:00:00 PM</li>
+            </ul>
+        </li>
+        <img width="1535" alt="Screenshot 2024-12-01 at 11 35 10 PM" src="https://github.com/user-attachments/assets/145e1127-ce33-47a4-881b-715d7105c7c3">
+        <li>Choose the <strong>Security</strong> log by expanding <strong>Windows Logs</strong> in the Event Logs field.</li>
+        <img width="539" alt="Screenshot 2024-12-01 at 11 35 32 PM" src="https://github.com/user-attachments/assets/f9620f90-3e5c-4afe-b0c1-faceb5c8e55e">
+        <li>Scroll to the bottom of the filtered results and slowly move up. Look at the <strong>Task Category</strong> column for <strong>Security Group Management</strong>.</li>
+    </ol>
+    <p><strong>Note:</strong> Security Group Management events track changes to user group memberships, which directly influence system access and privileges.</p>
+    <img width="1546" alt="Screenshot 2024-12-02 at 12 07 51 AM" src="https://github.com/user-attachments/assets/a085aed2-aaac-4150-a880-aa93a074a4cd">
+    <p><strong>Answer:</strong> 03/02/2019 4:04:47 PM</p>
+     <h2>13. What tool was used to get Windows passwords?</h2>
+    <p>A command prompt kept popping up with the path <code>C:\TMP\mim.exe</code>, which provided a clue about the tool being used. Here are the steps to confirm this:</p>
+    <ol>
+        <li>Open <strong>File Explorer</strong>.</li>
+        <li>Navigate to <code>Local Disk (C:) > TMP</code>.</li>
+        <li>Inside the <code>TMP</code> directory, locate the file <code>mim.exe</code> and a related Word document named <code>mim-out</code>.</li>
+        <li>Open <code>mim-out</code> to analyze its contents. It reveals the tool name.</li>
+    </ol>
+    <p><strong>Result:</strong></p>
+    <img width="1127" alt="Screenshot 2024-12-03 at 4 47 53 PM" src="https://github.com/user-attachments/assets/8ef2f309-5755-4001-bc93-a848affffa60" />
+    <img width="793" alt="Screenshot 2024-12-03 at 4 48 41 PM" src="https://github.com/user-attachments/assets/5e48eaed-e2ca-459a-9587-5eddfaa809c4" />
+    <p><strong>Answer:</strong> Mimikatz</p>
+     <h2>14. What was the attacker’s external control and command server’s IP?</h2>
+    <p>To identify the attacker’s Command and Control (C2) server IP, follow these steps:</p>
+    <ol>
+        <li>Open <strong>File Explorer</strong>.</li>
+        <li>Navigate to the file path: <code>C:\Windows\System32\drivers\etc</code>.</li>
+        <li>Locate the file named <code>hosts</code> and open it using Notepad.</li>
+    </ol>
+    <p>The file contains entries that redirect domain names to specific IP addresses. As shown in the screenshot below, we can see entries for <code>google.com</code> and <code>www.google.com</code> pointing to a suspicious IP address.</p>
+   <img width="795" alt="Screenshot 2024-12-12 at 11 52 49 PM" src="https://github.com/user-attachments/assets/ad2607c7-7ef3-440b-ad47-f0c9c8e1d58d" />
+    <p>Using a tool like <a href="https://whois.domaintools.com/" target="_blank">Domain Tools</a>, we can check the IP address to confirm that it is not hosted by Google. Instead, it uses Google's domain to hide its true identity.</p>
+    <img width="796" alt="Screenshot 2024-12-13 at 12 03 58 AM" src="https://github.com/user-attachments/assets/07fa9176-f9d5-440b-b866-75ab916b710f" />
+    <p><strong>Answer:</strong> 76.32.97.132</p>
     <footer>
         <p><em>Created by [Your Name]</em></p>
     </footer>
